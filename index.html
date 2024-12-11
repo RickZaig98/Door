@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christmas Greeting</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #87ceeb;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            margin: auto;
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+        h1 {
+            color: #ff5733;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 80%;
+            margin-top: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .mail-button {
+            font-size: 40px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            padding: 10px;
+            margin-top: 20px;
+        }
+        .mail-button:hover {
+            background-color: #ffeb3b;
+            border-radius: 10px;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff5733;
+        }
+        .christmas-icon {
+            font-size: 40px;
+            color: #ff5733;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            font-size: 24px;
+            color: #fff;
+            opacity: 0.8;
+            animation: fall 10s linear infinite;
+        }
+        .tree {
+            font-size: 30px;
+            color: green;
+            position: absolute;
+            animation: fall 10s linear infinite, rotate 5s linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                top: -10px;
+                transform: translateX(0) rotate(0);
+            }
+            100% {
+                top: 100%;
+                transform: translateX(200px) rotate(360deg);
+            }
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎄 Merry Christmas! 🎄</h1>
+        <p>Enter your name to receive a personalized Christmas message:</p>
+        <input type="text" id="name" placeholder="Enter your name" />
+        <button class="mail-button" onclick="showMessage()">📧</button>
+        <div class="message" id="message"></div>
+        <div class="christmas-icon" id="christmas-icon">🎁</div>
+    </div>
+
+    <script>
+        const messages = [
+            "You sleigh me, {name}! 🎁",
+            "Yule be the life of the party, {name}! ✨",
+            "Hope you have a tree-mendously merry Christmas, {name}! 🎄",
+            "Hope you have a Santa-stic Christmas, {name}! 🎅",
+            "Santa's got nothing on you, {name}! 🎅",
+            "You're snow joke, {name}! Wishing you a frosty and fun Christmas! ❄️",
+            "Fleece Navidad, {name}! May your woolly Christmas be merry and bright! 🐑",
+            "This Christmas, may your Wi-Fi be fast, your batteries be charged, and your relatives be bearable! 🎁📱",
+            "Wishing you a Marvel-ous Christmas, {name}! May you get as many gifts as Tony Stark has suits. 🦸‍♂️🎁",
+            "Hope your Christmas is as wild as The Lion King—and by wild, I mean no one accidentally gets thrown into a stampede. 🦁🎄",
+            "May your Christmas be like Aladdin—where the magic carpet is clean, the genie doesn’t try to steal your snacks, and the wishes don’t expire. 🕌🎁"
+        ];
+
+        let snowflakes = [];
+        let trees = [];
+        let isHearts = false;  // Track whether the emojis are hearts or not
+
+        function showMessage() {
+            const name = document.getElementById('name').value;
+            const messageElement = document.getElementById('message');
+            const christmasIcon = document.getElementById('christmas-icon');
+
+            if (name) {
+                // Select a random message from the array and replace {name} with the user's name
+                const randomMessage = messages[Math.floor(Math.random() * messages.length)].replace("{name}", name);
+                messageElement.innerHTML = randomMessage;
+                christmasIcon.innerHTML = "🎁🎄";
+            } else {
+                messageElement.innerHTML = "Please enter your name!";
+                christmasIcon.innerHTML = "";
+            }
+        }
+
+        // Snowflake Effect
+        for (let i = 0; i < 250; i++) {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.innerHTML = '❄';
+            snowflake.style.left = Math.random() * 100 + '%';
+            snowflake.style.animationDuration = Math.random() * 3 + 7 + 's';
+            snowflake.style.animationDelay = Math.random() * 5 + 's';
+            document.body.appendChild(snowflake);
+            snowflakes.push(snowflake);
+        }
+
+        // Falling Christmas Trees with spinning and falling effect
+        for (let i = 0; i < 150; i++) {
+            const tree = document.createElement('div');
+            tree.classList.add('tree');
+            tree.innerHTML = '🎄';
+            tree.style.left = Math.random() * 100 + '%';
+            tree.style.top = Math.random() * -50 + '%';  // Start higher for falling effect
+            tree.style.fontSize = Math.random() * 30 + 2 + 'px'; // Random size
+            tree.style.animationDuration = Math.random() * 5 + 5 + 's'; // Random falling speed
+            tree.style.animationDelay = Math.random() * 5 + 's'; // Random delay before falling starts
+            document.body.appendChild(tree);
+            trees.push(tree);
+        }
+
+        // Easter Egg: Toggle between snowflakes/trees and hearts when clicking the Christmas gift
+        document.getElementById('christmas-icon').addEventListener('click', function() {
+            if (isHearts) {
+                // Change hearts back to snowflakes and trees
+                snowflakes.forEach(snowflake => {
+                    snowflake.innerHTML = '❄';
+                });
+                trees.forEach(tree => {
+                    tree.innerHTML = '🎄';
+                });
+                isHearts = false;
+            } else {
+                // Change snowflakes and trees to hearts
+                snowflakes.forEach(snowflake => {
+                    snowflake.innerHTML = '❤️';
+                });
+                trees.forEach(tree => {
+                    tree.innerHTML = '❤️';
+                });
+                isHearts = true;
+            }
+        });
+    </script>
+</body>
+</html>
